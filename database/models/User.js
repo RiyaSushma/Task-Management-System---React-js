@@ -23,7 +23,6 @@ const UserSchema = new mongoose.Schema({
     profileImg: {
         type: String,
         required: [false],
-        unique: true,
         select: true,
         default: '../../avatar.png',
     }
