@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import './Sidebar.css';
 import Modal from "./Modal";
 import CreateTaskModal from "./CreateTaskModal";
@@ -12,12 +12,24 @@ function Sidebar({ onMenuClick, onTaskCreated }) {
     const [{user}, dispatch] = useStateValue();
     const navigate = useNavigate();
     console.log(user);
+    const [currentUser, setCurrentUser] = useState(null);
 
     const [showModal, setShowModal] = useState(false);
 
     const handleModalClose = () => {
         setShowModal(false);
     };
+
+    useEffect(() => {
+        if (user) {
+            setCurrentUser(user);
+        } else {
+            const storedUser = JSON.parse(localStorage.getItem("user"));
+            if (storedUser) {
+                setCurrentUser(storedUser);
+            }
+        }
+    }, [user]);
 
     const handleTaskSubmit = (taskData) => {
         console.log('Task Created:', taskData);
@@ -39,16 +51,16 @@ function Sidebar({ onMenuClick, onTaskCreated }) {
 
     return (
         <div className="sidebar">
-            {user && ( // Conditionally render profile section
+            {currentUser && ( // Conditionally render profile section
                 <div className="profile-user-details">
                     <img 
                         className="profile-image" 
-                        src={user.profileImg} 
+                        src={currentUser.profileImg} 
                         alt="Profile-image"
                     />
                     <div className="profile-info">
-                        <div className="profile-username">{user.username}</div>
-                        <div className="profile-email">{user.emailId}</div>
+                        <div className="profile-username">{currentUser.username}</div>
+                        <div className="profile-email">{currentUser.emailId}</div>
                     </div>
                 </div>
             )}

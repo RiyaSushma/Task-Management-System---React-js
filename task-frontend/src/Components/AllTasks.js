@@ -4,6 +4,7 @@ import { useStateValue } from "../state/context";
 
 const AllTasks = ({ taskUpdated }) => {
   const [tasks, setTasks] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [view, setView] = useState(false);
   const [deleteView, setDeleteView] = useState(false);
   const [{ user }] = useStateValue();
@@ -11,6 +12,8 @@ const AllTasks = ({ taskUpdated }) => {
   const [taskDelete, setTaskDelete] = useState(null);
   const [updateTask, setUpdatedTask] = useState(null);
   const [updatedView, setUpdatedView] = useState(false);
+  const [sortCriteria, setSortCriteria] = useState("title");
+  const [sortDirection, setSortDirection] = useState("asc");
   const [viewTask, setViewTask] = useState({
     title: "",
     description: "",
@@ -20,7 +23,7 @@ const AllTasks = ({ taskUpdated }) => {
 
   const fetchTasks = async () => {
     try {
-      const storedUser = JSON.parse(localStorage.getItem('user'));
+      const storedUser = JSON.parse(localStorage.getItem("user"));
       console.log(storedUser);
       const userId = storedUser ? storedUser.userId : user?.userId;
       const response = await fetch(
@@ -44,6 +47,34 @@ const AllTasks = ({ taskUpdated }) => {
       console.error("Error fetching tasks:", error);
     }
   };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredTasks = tasks.filter((task) =>
+    task.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleSortChange = (criteria) => {
+    setSortCriteria(criteria);
+    setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+  };
+
+  const sortedTasks = [...filteredTasks].sort((a, b) => {
+    const aValue = a[sortCriteria] || '';
+    const bValue = b[sortCriteria] || '';
+  
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+      return sortDirection === "asc"
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
+    } else if (typeof aValue === 'number' && typeof bValue === 'number') {
+      return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
+    } else {
+      return 0;
+    }
+  });
 
   useEffect(() => {
     fetchTasks();
@@ -115,14 +146,29 @@ const AllTasks = ({ taskUpdated }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setTaskUpdateList((prevData) => ({
-        ...prevData,
-        [name] : value,
+      ...prevData,
+      [name]: value,
     }));
   };
 
   return (
     <div className="tasks-container">
       <h2>Tasks</h2>
+      <div className="filter-container">
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search tasks..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
+      </div>
+      <div className="sort-container">
+        <button onClick={() => handleSortChange("title")}>
+          Sort {sortDirection === "asc" ? "▲" : "▼"}
+        </button>
+      </div>
+      </div>
       <table className="tasks-table">
         <thead>
           <tr>
@@ -131,8 +177,8 @@ const AllTasks = ({ taskUpdated }) => {
           </tr>
         </thead>
         <tbody>
-          {tasks.length > 0 ? (
-            tasks.map((task) => (
+        {sortedTasks.length > 0 ? (
+            sortedTasks.map((task) => (
               <tr key={task._id}>
                 <td>{task.title}</td>
                 <td>

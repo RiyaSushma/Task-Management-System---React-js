@@ -87,3 +87,32 @@
 .input-container {
     width: 28rem !important;
 }
+
+.filter-container {
+    display: flex;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.search-container {
+    width: 30rem;
+    height: 3rem;
+}
+
+.search-container input {
+    width: 20rem;
+    height: 2.5rem;
+    border: 0.25rem solid white;
+    box-shadow: 0.05rem 0.05rem grey inset;
+}
+
+.sort-container {
+    margin-left: auto;
+    margin-right: 1rem;
+}
+
+.sort-container button {
+    width: 5rem;
+    height: 2.5rem;
+    background-color: white;
+}
