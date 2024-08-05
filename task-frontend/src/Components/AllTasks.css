@@ -1,0 +1,89 @@
+.tasks-container {
+    padding: 1rem;
+    max-width: 100%;
+    margin: auto;
+}
+
+.tasks-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tasks-table th, .tasks-table td {
+    border: 0.25rem solid #D3D3D3;
+    padding: 0.5rem;
+    text-align: left;
+}
+
+.tasks-table th {
+    background-color: #D3D3D3;
+    font-weight: bold;
+}
+
+.tasks-table tr {
+    background-color: #C0C0C0;
+}
+
+.tasks-table td button {
+    margin-left: 1rem;
+    width: 6rem;
+}
+
+.actions {
+    width: 30rem;
+}
+
+.tasks-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+.modal-container {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    width: 100vw !important;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+}
+
+.modal-container button {
+    background-color: #D70040;
+    color: white;
+    margin-right: 0;
+    margin-left: auto;
+    border: 0.25rem solid white;
+}
+
+.modal-header {
+    display: flex;
+    padding: 1rem !important;
+}
+
+.tasks-container h2 {
+    font-size: 1.5rem;
+    color: white;
+    display: flex;
+}
+
+.modal-btn {
+    display: flex;
+    margin: 0;
+}
+
+.modal-btn button {
+    margin: 0;
+}
+
+.modal-content-container {
+    display: flex;
+    width: auto !important;
+    min-width: 30rem !important;
+    height: auto;
+}
+
+.modal-body {
+    padding: 1.5rem !important;
+}
+
+.input-container {
+    width: 28rem !important;
+}

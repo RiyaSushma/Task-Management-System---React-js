@@ -1,0 +1,17 @@
+{
+  "name": "task-management-system",
+  "version": "1.0.0",
+  "description": "A task management system with a React frontend and Express.js backend.",
+  "main": "index.js",
+  "scripts": {
+    "client": "npm run start --prefix task-frontend",
+    "server": "cd task-backend && nodemon server.js",
+    "start": "concurrently \"npm run client\" \"npm run server\"",
+    "install-all": "npm install && npm install --prefix task-frontend && npm install --prefix task-backend"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

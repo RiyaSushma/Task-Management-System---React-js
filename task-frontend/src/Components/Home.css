@@ -1,0 +1,28 @@
+.home-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    gap: 4;
+    background-color: black;
+}
+
+.sidebar-container {
+    display: flex;
+    color: white;
+    margin: 0.5rem;
+    height: 98vh;
+    width: 16.6667%;
+    background-color: #3b3b3b;
+    border-radius: 0.5rem;
+    border: 0.25rem solid #636363;
+    box-shadow: 0.25rem #636363;
+}
+
+.dashboard-container {
+    width: 83.3333%;
+    margin: 0.5rem;
+    background-color: #3b3b3b;
+    border-radius: 0.5rem;
+    border: 0.25rem solid #636363;
+    box-shadow: 0.25rem #636363;
+}
