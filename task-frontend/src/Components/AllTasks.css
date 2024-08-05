@@ -1,6 +1,9 @@
 .tasks-container {
+    display: flex;
+    flex-direction: column;
     padding: 1rem;
     max-width: 100%;
+    height: 100vh;
     margin: auto;
 }
 
@@ -115,4 +118,28 @@
     width: 5rem;
     height: 2.5rem;
     background-color: white;
+}
+
+.pagination-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: auto;
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+.pagination-controls span {
+    color: white;
+    font-weight: 500;
+    display: flex;    
+    align-items: center;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.pagination-controls button {
+    width: 6rem;
+    height: 2.5rem;
+    color: black;
+    font-weight: 500;
 }

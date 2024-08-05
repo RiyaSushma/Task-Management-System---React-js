@@ -5,6 +5,8 @@ import { useStateValue } from "../state/context";
 const AllTasks = ({ taskUpdated }) => {
   const [tasks, setTasks] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [tasksPerPage, setTasksPerPage] = useState(1);
   const [view, setView] = useState(false);
   const [deleteView, setDeleteView] = useState(false);
   const [{ user }] = useStateValue();
@@ -95,6 +97,16 @@ const AllTasks = ({ taskUpdated }) => {
     console.log("View task:", taskId);
   };
 
+  const totalPages = Math.ceil(sortedTasks.length/tasksPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  }
+
+  const indexOfLastTask = currentPage * tasksPerPage;
+  const indexOfFirstTask = indexOfLastTask - tasksPerPage;
+  const currentTasks = sortedTasks.slice(indexOfFirstTask, indexOfLastTask);
+
   const handleDelete = async () => {
     try {
       if (!taskDelete) return; // No task to delete
@@ -177,16 +189,14 @@ const AllTasks = ({ taskUpdated }) => {
           </tr>
         </thead>
         <tbody>
-        {sortedTasks.length > 0 ? (
-            sortedTasks.map((task) => (
+        {currentTasks.length > 0 ? (
+            currentTasks.map((task) => (
               <tr key={task._id}>
                 <td>{task.title}</td>
                 <td>
                   <button
                     className="btn btn-light"
-                    onClick={() => {
-                      handleView(task._id);
-                    }}
+                    onClick={() => handleView(task._id)}
                   >
                     View
                   </button>
@@ -218,6 +228,17 @@ const AllTasks = ({ taskUpdated }) => {
           )}
         </tbody>
       </table>
+      <div className="pagination-controls">
+        <button
+            className="btn btn-light"
+            disabled={currentPage === 1}
+            onClick={() => handlePageChange(currentPage - 1)}
+        >Previous</button>
+        <span>
+            Page {currentPage} of {totalPages}
+        </span>
+        <button className="btn btn-light" disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>Next</button>
+      </div>
       {view && (
         <div className="modal modal-container" tabIndex="-1" role="dialog">
           <div className="modal-dialog modal-dialog-box" role="document">
