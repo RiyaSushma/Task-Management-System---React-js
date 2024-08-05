@@ -14,6 +14,7 @@ const CreateTaskForm = ({ handleClose, onTaskCreated }) => {
     const [{user}, dispatch] = useStateValue();
     const [{todos}] = useStateValue();
     const navigate = useNavigate();
+    const storedUser = JSON.parse(localStorage.getItem("user"));
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -33,6 +34,7 @@ const CreateTaskForm = ({ handleClose, onTaskCreated }) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: `Bearer ${storedUser.authToken}`,
             },
             body: JSON.stringify({title: taskData.title, description: taskData.description, priority: taskData.priority, status: taskData.status, userId: userId })
         });

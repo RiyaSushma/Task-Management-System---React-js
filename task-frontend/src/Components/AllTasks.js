@@ -16,6 +16,8 @@ const AllTasks = ({ taskUpdated }) => {
   const [updatedView, setUpdatedView] = useState(false);
   const [sortCriteria, setSortCriteria] = useState("title");
   const [sortDirection, setSortDirection] = useState("asc");
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  console.log(storedUser.authToken);
   const [viewTask, setViewTask] = useState({
     title: "",
     description: "",
@@ -25,18 +27,24 @@ const AllTasks = ({ taskUpdated }) => {
 
   const fetchTasks = async () => {
     try {
-      const storedUser = JSON.parse(localStorage.getItem("user"));
-      console.log(storedUser);
       const userId = storedUser ? storedUser.userId : user?.userId;
       const response = await fetch(
-        `http://localhost:8000/task/api/tasks/user/${userId}`
+        `http://localhost:8000/task/api/tasks/user/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${storedUser.authToken}` 
+          },
+        }
       );
       const responseJson = await response.json();
       const taskIds = responseJson.tasks;
 
       const tasksDetailsPromises = taskIds.map(async (taskId) => {
         const taskResponse = await fetch(
-          `http://localhost:8000/task/api/tasks/${taskId}`
+          `http://localhost:8000/task/api/tasks/${taskId}`, {
+            headers: {
+              Authorization: `Bearer ${storedUser.authToken}` 
+            },
+          }
         );
         const taskJson = await taskResponse.json();
         return taskJson.task;
@@ -85,7 +93,11 @@ const AllTasks = ({ taskUpdated }) => {
   const handleView = async (taskId) => {
     try {
       const response = await fetch(
-        `http://localhost:8000/task/api/tasks/${taskId}`
+        `http://localhost:8000/task/api/tasks/${taskId}`, {
+          headers: {
+            Authorization: `Bearer ${storedUser.authToken}` 
+          },
+        }
       );
       const responseJson = await response.json();
       console.log(responseJson);
@@ -114,6 +126,9 @@ const AllTasks = ({ taskUpdated }) => {
         `http://localhost:8000/task/api/tasks/${taskDelete}`,
         {
           method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${storedUser.authToken}` 
+          },
         }
       );
       const responseJson = await response.json();
@@ -138,6 +153,7 @@ const AllTasks = ({ taskUpdated }) => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${storedUser.authToken}`,
           },
           body: JSON.stringify(taskUpdateList),
         }
